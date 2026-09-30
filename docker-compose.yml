@@ -1,0 +1,19 @@
+services:
+  whisper:
+    build: .
+    image: whisper-mic
+    # Hand the host's ALSA sound devices to the container so arecord can see the mics.
+    devices:
+      - /dev/snd:/dev/snd
+    volumes:
+      - models:/models
+    environment:
+      WHISPER_MODEL: ${WHISPER_MODEL:-base.en}
+      WHISPER_LANG: ${WHISPER_LANG:-en}
+    # Interactive: run with `docker compose run --rm whisper`, not `up`.
+    stdin_open: true
+    tty: true
+    init: true
+
+volumes:
+  models:
